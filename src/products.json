@@ -40,7 +40,8 @@
 		"id": 3,
 		"status": true,
 		"thumbnails": [
-			"http://dummyimage.com/227x100.png/ff4444/ffffff", "http://dummyimage.com/227x100.png/ff4444/ffffff"
+			"http://dummyimage.com/227x100.png/ff4444/ffffff",
+			"http://dummyimage.com/227x100.png/ff4444/ffffff"
 		],
 		"title": "Tripping the Rift: The Movie",
 		"description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
@@ -101,7 +102,9 @@
 		"id": 8,
 		"status": true,
 		"thumbnails": [
-			"http://dummyimage.com/229x100.png/5fa2dd/ffffff", "http://dummyimage.com/169x100.png/dddddd/000000", "http://dummyimage.com/193x100.png/cc0000/ffffff"
+			"http://dummyimage.com/229x100.png/5fa2dd/ffffff",
+			"http://dummyimage.com/169x100.png/dddddd/000000",
+			"http://dummyimage.com/193x100.png/cc0000/ffffff"
 		],
 		"title": "Event, The",
 		"description": "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst.",
@@ -125,11 +128,51 @@
 		"id": 10,
 		"status": true,
 		"thumbnails": [
-			"http://dummyimage.com/138x100.png/dddddd/000000", "http://dummyimage.com/131x100.png/ff4444/ffffff"
+			"http://dummyimage.com/138x100.png/dddddd/000000",
+			"http://dummyimage.com/131x100.png/ff4444/ffffff"
+		],
+		"title": "CAMBIE TITLE",
+		"description": "CAMBIE DESCRIPTION",
+		"code": "0378-0071",
+		"price": 585,
+		"stock": 10,
+		"category": "ProductoPrueba"
+	},
+	{
+		"id": 11,
+		"status": true,
+		"thumbnails": [
+			"asd"
 		],
 		"title": "Producto Prueba 10",
 		"description": "otenti.",
-		"code": "0378-0071",
+		"code": "0378-0078",
+		"price": 416,
+		"stock": 2,
+		"category": "ProductoPrueba"
+	},
+	{
+		"id": 12,
+		"status": true,
+		"thumbnails": [
+			"asd"
+		],
+		"title": "Producto Prueba 10",
+		"description": "otenti.",
+		"code": "0378-0079",
+		"price": 416,
+		"stock": 2,
+		"category": "ProductoPrueba"
+	},
+	{
+		"id": 13,
+		"status": true,
+		"thumbnails": [
+			"asd"
+		],
+		"title": "Producto Prueba 10",
+		"description": "otenti.",
+		"code": "0378-0080",
 		"price": 416,
 		"stock": 2,
 		"category": "ProductoPrueba"

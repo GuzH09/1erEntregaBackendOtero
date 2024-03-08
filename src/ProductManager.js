@@ -31,17 +31,7 @@ export default class ProductManager {
     }
 
     async addProduct(productObj) {
-        // Validates required fields
-        // Not needed because endpoint is validating that already
-
-        // const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category'];
-        // for (const field of requiredFields) {
-        //     if (!productObj[field]) {
-        //         return `Error: field ${field} is missing on the object.`;
-        //     }
-        // }
-
-        // field "code" doesn't appear twice
+        // Validates field "code" doesn't appear twice
         let fileProducts = await this.getProducts();
         if (fileProducts.some(product => product.code === productObj.code)) {
             return {error: `Error: code ${productObj.code} already exists.`};

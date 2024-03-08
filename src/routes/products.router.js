@@ -8,41 +8,66 @@ const PM = new ProductManager();
 productsRouter.get('/', async (req, res) => {
     let {limit} = req.query;
     let products = await PM.getProducts();
-
     if (limit) {
         products = products.slice(0, parseInt(limit));
     }
-
     res.send({products});
 });
 
 // Get Product By Id
 productsRouter.get('/:pid', async (req, res) => {
     let productId = req.params.pid;
-
     const products = await PM.getProductById(parseInt(productId));
-
     products['error'] ? res.status(400).send(products) : res.send({products});
 });
 
 // Create New Product
 productsRouter.post('/', async (req, res) => {
+    // Get Product Data from Body
     let { title, description, code, price, stock, category, thumbnails } = req.body;
-    const objectFields = {title, description, code, price, stock, category, thumbnails};
 
     // Status is true by default
-    // Thumbnails is not required
-    const requiredFields = ['title', 'description', 'code', 'price', 'stock', 'category']
+    // Thumbnails is not required, [] by default
+    const newObjectData = validateNewProduct(
+        {title, description, code, price, stock, category, thumbnails}, 
+        ['title', 'description', 'code', 'price', 'stock', 'category']
+    );
+    if ( newObjectData['error'] ) return res.status(400).send(newObjectData);
+    const result = await PM.addProduct(newObjectData);
+    result['success'] ? res.status(201).send(result) : res.status(400).send(result);
+});
 
+// Update Existing Product
+productsRouter.put('/:pid', async (req, res) => {
+    // Get Product Data from Body
+    let { title, description, code, price, stock, category, thumbnails } = req.body;
+    // Get Product Id from Params
+    let productId = req.params.pid;
+
+    const newObjectData = validateUpdateProduct( {title, description, code, price, stock, category, thumbnails} );
+    if ( newObjectData['error'] ) return res.status(400).send(newObjectData);
+    const result = await PM.updateProduct( parseInt(productId), newObjectData );
+    result['success'] ? res.status(201).send(result) : res.status(400).send(result);
+});
+
+// Delete Existing Product
+productsRouter.delete('/:pid', async (req, res) => {
+    // Get Product Id from Params
+    let productId = req.params.pid;
+    const result = await PM.deleteProduct(parseInt(productId));
+    result['success'] ? res.status(201).send(result) : res.status(400).send(result);
+});
+
+// Validation Function for New Product
+const validateNewProduct = (objectFields, requiredFields) => {
     const newObjectData = {}
 
     // Validates fields
     for (const field in objectFields) {
         // If field is missing and field is required : Missing Field
         if ( !objectFields[field] && requiredFields.includes(field) ) {
-            return res.status(400).send({error: `Missing field: ${field} .`})
+            return {error: `Missing field: ${field} .`};
         }
-
         // If field is not missing add to new object
         if ( objectFields[field] ) {
             newObjectData[field] = objectFields[field];
@@ -54,19 +79,19 @@ productsRouter.post('/', async (req, res) => {
             case "code":
             case "category":
                 if ( typeof objectFields[field] !== 'string' ) {
-                    return res.status(400).send({ error: `Invalid type for field: ${field}. Expected: String.` });
+                    return { error: `Invalid type for field: ${field}. Expected: String.` };
                 }
                 break;
             case "price":
             case "stock":
                 if ( typeof objectFields[field] !== 'number' ) {
-                    return res.status(400).send({ error: `Invalid type for field: ${field}. Expected: Number.` });
+                    return { error: `Invalid type for field: ${field}. Expected: Number.` };
                 }
                 break;
             case "thumbnails":
                 // It only returns an error if the thumbnail HAS a value, but it is not an array.
                 if ( objectFields[field] && !Array.isArray(objectFields[field]) ) {
-                    return res.status(400).send({ error: `Invalid type for field: ${field}. Expected: array of strings.` });
+                    return { error: `Invalid type for field: ${field}. Expected: array of strings.` };
                 }
                 break;
             default:
@@ -74,20 +99,11 @@ productsRouter.post('/', async (req, res) => {
         }
     }
 
-    const result = await PM.addProduct(newObjectData)
+    return newObjectData;
+}
 
-    result['success'] ? res.status(201).send(result) : res.status(400).send(result);
-});
-
-// Update Existing Product
-productsRouter.put('/:pid', async (req, res) => {
-    // Get Product Data from Body
-    let { title, description, code, price, stock, category, thumbnails } = req.body;
-    const objectFields = {title, description, code, price, stock, category, thumbnails};
-
-    // Get Product Id from Params
-    let productId = req.params.pid;
-
+// Validation Function for Updating Product
+const validateUpdateProduct = (objectFields) => {
     const newObjectData = {}
 
     // Validates new Fields
@@ -104,20 +120,20 @@ productsRouter.put('/:pid', async (req, res) => {
             case "category":
                 // It only returns an error if the title-description-code-category HAS a value, but it is not a string.
                 if ( objectFields[field] && typeof objectFields[field] !== 'string' ) {
-                    return res.status(400).send({ error: `Invalid type for field: ${field}. Expected: String.` });
+                    return { error: `Invalid type for field: ${field}. Expected: String.` };
                 }
                 break;
             case "price":
             case "stock":
                 // It only returns an error if the stock or price HAS a value, but it is not a number.
                 if ( objectFields[field] && typeof objectFields[field] !== 'number' ) {
-                    return res.status(400).send({ error: `Invalid type for field: ${field}. Expected: Number.` });
+                    return { error: `Invalid type for field: ${field}. Expected: Number.` };
                 }
                 break;
             case "thumbnails":
                 // It only returns an error if the thumbnail HAS a value, but it is not an array.
                 if ( objectFields[field] && !Array.isArray(objectFields[field]) ) {
-                    return res.status(400).send({ error: `Invalid type for field: ${field}. Expected: array of strings.` });
+                    return { error: `Invalid type for field: ${field}. Expected: array of strings.` };
                 }
                 break;
             default:
@@ -125,19 +141,7 @@ productsRouter.put('/:pid', async (req, res) => {
         }
     }
 
-    const result = await PM.updateProduct( parseInt(productId), newObjectData );
-    
-    result['success'] ? res.status(201).send(result) : res.status(400).send(result);
-});
-
-// Delete Existing Product
-productsRouter.delete('/:pid', async (req, res) => {
-    // Get Product Id from Params
-    let productId = req.params.pid;
-
-    const result = await PM.deleteProduct(parseInt(productId));
-    
-    result['success'] ? res.status(201).send(result) : res.status(400).send(result);
-});
+    return newObjectData;
+}
 
 export default productsRouter;
