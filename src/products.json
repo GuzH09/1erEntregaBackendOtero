@@ -137,44 +137,5 @@
 		"price": 585,
 		"stock": 10,
 		"category": "ProductoPrueba"
-	},
-	{
-		"id": 11,
-		"status": true,
-		"thumbnails": [
-			"asd"
-		],
-		"title": "Producto Prueba 10",
-		"description": "otenti.",
-		"code": "0378-0078",
-		"price": 416,
-		"stock": 2,
-		"category": "ProductoPrueba"
-	},
-	{
-		"id": 12,
-		"status": true,
-		"thumbnails": [
-			"asd"
-		],
-		"title": "Producto Prueba 10",
-		"description": "otenti.",
-		"code": "0378-0079",
-		"price": 416,
-		"stock": 2,
-		"category": "ProductoPrueba"
-	},
-	{
-		"id": 13,
-		"status": true,
-		"thumbnails": [
-			"asd"
-		],
-		"title": "Producto Prueba 10",
-		"description": "otenti.",
-		"code": "0378-0080",
-		"price": 416,
-		"stock": 2,
-		"category": "ProductoPrueba"
 	}
 ]
